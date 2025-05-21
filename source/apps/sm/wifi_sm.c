@@ -16,6 +16,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
  **************************************************************************/
+#include <unistd.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include "../../../lib/datapipeline/dppline.h"
@@ -789,6 +790,10 @@ int handle_sm_webconfig_event(wifi_app_t *app, wifi_event_t *event)
 
 int sm_event(wifi_app_t *app, wifi_event_t *event)
 {
+    if (access("/nvram/wifiSmEvDis", F_OK) == 0) {
+        return 0;
+    }
+
     switch (event->event_type) {
         case wifi_event_type_webconfig:
             handle_sm_webconfig_event(app, event);

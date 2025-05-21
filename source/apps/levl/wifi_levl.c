@@ -17,6 +17,7 @@
   limitations under the License.
  **************************************************************************/
 
+#include <unistd.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include "stdlib.h"
@@ -1104,6 +1105,9 @@ void monitor_radio_temperature(wifi_app_t *app, wifi_event_t *event)
 #ifdef ONEWIFI_LEVL_APP_SUPPORT
 int levl_event(wifi_app_t *app, wifi_event_t *event)
 {
+    if (access("/nvram/wifiLevlEvDis", F_OK) == 0) {
+        return 0;
+    }
 
     switch (event->event_type) {
         case wifi_event_type_hal_ind:

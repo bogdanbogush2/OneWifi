@@ -1201,11 +1201,16 @@ webconfig_error_t free_vap_object_assoc_client_entries(webconfig_subdoc_data_t *
                 return webconfig_error_invalid_subdoc;
             }
             if (rdk_vap_info->associated_devices_map != NULL) {
+                    wifi_util_info_print(WIFI_CTRL, "%s:%d: %p \n", __func__,
+                        __LINE__, rdk_vap_info->associated_devices_map);
                 assoc_dev_data = hash_map_get_first(rdk_vap_info->associated_devices_map);
                 while(assoc_dev_data != NULL) {
                     to_mac_str(assoc_dev_data->dev_stats.cli_MACAddress, mac_str);
                     assoc_dev_data = hash_map_get_next(rdk_vap_info->associated_devices_map, assoc_dev_data);
                     temp_assoc_dev_data = hash_map_remove(rdk_vap_info->associated_devices_map, mac_str);
+                    wifi_util_info_print(WIFI_CTRL, "%s:%d: %p remove: %s size:%d\n", __func__,
+                        __LINE__, rdk_vap_info->associated_devices_map, mac_str,
+                        hash_map_count(rdk_vap_info->associated_devices_map));
                     if (temp_assoc_dev_data != NULL) {
                         free(temp_assoc_dev_data);
                     }
@@ -1242,15 +1247,19 @@ webconfig_error_t free_vap_object_diff_assoc_client_entries(webconfig_subdoc_dat
                 return webconfig_error_invalid_subdoc;
             }
             if (rdk_vap_info->associated_devices_diff_map != NULL) {
+                wifi_util_info_print(WIFI_CTRL, "%s:%d %p\n", __func__, __LINE__, rdk_vap_info->associated_devices_diff_map);
                 assoc_dev_data = hash_map_get_first(rdk_vap_info->associated_devices_diff_map);
                 while(assoc_dev_data != NULL) {
                     to_mac_str(assoc_dev_data->dev_stats.cli_MACAddress, mac_str);
                     assoc_dev_data = hash_map_get_next(rdk_vap_info->associated_devices_diff_map, assoc_dev_data);
                     temp_assoc_dev_data = hash_map_remove(rdk_vap_info->associated_devices_diff_map, mac_str);
+                    wifi_util_info_print(WIFI_CTRL, "%s:%d %p remove %s size: %d\n", __func__, __LINE__,
+                        rdk_vap_info->associated_devices_diff_map, mac_str, hash_map_count(rdk_vap_info->associated_devices_diff_map));
                     if (temp_assoc_dev_data != NULL) {
                         free(temp_assoc_dev_data);
                     }
                 }
+                wifi_util_info_print(WIFI_CTRL, "%s:%d %p destroy\n", __func__, __LINE__, rdk_vap_info->associated_devices_diff_map);
                 hash_map_destroy(rdk_vap_info->associated_devices_diff_map);
                 rdk_vap_info->associated_devices_diff_map =  NULL;
             }

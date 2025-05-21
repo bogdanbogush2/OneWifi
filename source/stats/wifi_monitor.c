@@ -1523,7 +1523,9 @@ void *monitor_function  (void *data)
                     break;
 
                     case wifi_event_monitor_connect:
+                    if (access("/nvram/wifiMonAssocDis", F_OK) != 0) {
                         process_connect(event_data->ap_index, &event_data->u.dev);
+                    }
                     break;
 
                     case wifi_event_monitor_disconnect:
@@ -2918,10 +2920,14 @@ int device_associated(int ap_index, wifi_associated_dev_t *associated_dev)
     }
 
     assoc_data.ap_index = data.ap_index;
-    push_event_to_ctrl_queue(&assoc_data, sizeof(assoc_data), wifi_event_type_hal_ind, wifi_event_hal_assoc_device, NULL);
+    if (access("/nvram/wifiCtrlAssocDis", F_OK) != 0) {
+        push_event_to_ctrl_queue(&assoc_data, sizeof(assoc_data), wifi_event_type_hal_ind, wifi_event_hal_assoc_device, NULL);
+    }
 
     memcpy(&data.u.dev.dev_stats, &assoc_data.dev_stats, sizeof(wifi_associated_dev3_t));
-    push_event_to_monitor_queue(&data, wifi_event_monitor_connect, NULL);
+    if (access("/nvram/wifiMonAssocDis", F_OK) != 0) {
+        push_event_to_monitor_queue(&data, wifi_event_monitor_connect, NULL);
+    }
 
     return 0;
 }

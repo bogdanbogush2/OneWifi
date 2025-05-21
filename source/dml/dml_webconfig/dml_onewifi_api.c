@@ -339,7 +339,9 @@ void existing_assoc_list_update(webconfig_subdoc_decoded_data_t *params)
     hash_map_t *associated_devices_map = NULL;
     assoc_dev_data_t *dml_temp_assoc_data;
 
+    wifi_util_info_print(WIFI_CTRL, "%s:%d \n", __func__, __LINE__);
     pthread_mutex_lock(&webconfig_dml.assoc_dev_lock);
+    wifi_util_info_print(WIFI_CTRL, "%s:%d \n", __func__, __LINE__);
     for (r_index = 0; r_index < (int)get_num_radio_dml(); r_index++) {
         for (v_index = 0; v_index < MAX_NUM_VAP_PER_RADIO; v_index++) {
             associated_devices_map = params->radios[r_index].vaps.rdk_vap_array[v_index].associated_devices_diff_map;
@@ -349,12 +351,14 @@ void existing_assoc_list_update(webconfig_subdoc_decoded_data_t *params)
                     *dml_assoc_dev_map = hash_map_create();
                 }
 
+                wifi_util_info_print(WIFI_CTRL, "%s:%d %p size:%d \n", __func__, __LINE__, associated_devices_map, hash_map_count(associated_devices_map));
                 assoc_dev_data = hash_map_get_first(associated_devices_map);
                 while (assoc_dev_data != NULL) {
                     memset(key, 0, sizeof(key));
                     to_mac_str(assoc_dev_data->dev_stats.cli_MACAddress, key);
                     assoc_dev_data = hash_map_get_next(associated_devices_map, assoc_dev_data);
                     temp_assoc_dev_data = hash_map_remove(associated_devices_map, key);
+                    wifi_util_info_print(WIFI_CTRL, "%s:%d %p remove: %s size:%d\n", __func__, __LINE__, associated_devices_map, key, hash_map_count(associated_devices_map));
                     if (temp_assoc_dev_data == NULL) {
                         continue;
                     }
@@ -379,6 +383,8 @@ void existing_assoc_list_update(webconfig_subdoc_decoded_data_t *params)
                     }
                     free(temp_assoc_dev_data);
                 }
+                hash_map_destroy(associated_devices_map);
+                params->radios[r_index].vaps.rdk_vap_array[v_index].associated_devices_diff_map = NULL;
             }
         }
     }

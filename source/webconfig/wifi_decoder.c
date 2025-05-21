@@ -3286,11 +3286,15 @@ webconfig_error_t decode_associated_clients_object(webconfig_subdoc_data_t *data
         }
         if (assoclist_type == assoclist_type_full) {
             associated_devices_map = rdk_vap_info->associated_devices_map;
+                wifi_util_info_print(WIFI_CTRL, "%s:%d %p \n", __func__, __LINE__,
+                    associated_devices_map);
         } else if ((assoclist_type == assoclist_type_add) || (assoclist_type == assoclist_type_remove)) {
             if (rdk_vap_info->associated_devices_diff_map == NULL) {
                 rdk_vap_info->associated_devices_diff_map = hash_map_create();
             }
             associated_devices_map = rdk_vap_info->associated_devices_diff_map;
+                wifi_util_info_print(WIFI_CTRL, "%s:%d %p \n", __func__, __LINE__,
+                    associated_devices_map);
         }
 
         for (i=0; i<size; i++) {
@@ -3559,6 +3563,8 @@ webconfig_error_t decode_associated_clients_object(webconfig_subdoc_data_t *data
             }
 
             if (associated_devices_map != NULL) {
+                wifi_util_info_print(WIFI_CTRL, "%s:%d %p add mac:%s size:%d\n", __func__, __LINE__,
+                    associated_devices_map, tmp_mac_key, hash_map_count(associated_devices_map));
                 str_tolower(tmp_mac_key);
                 tmp_assoc_dev_data = hash_map_get(associated_devices_map, tmp_mac_key);
                 if (tmp_assoc_dev_data == NULL) {
@@ -3569,6 +3575,8 @@ webconfig_error_t decode_associated_clients_object(webconfig_subdoc_data_t *data
                     }
                     memcpy(tmp_assoc_dev_data, &assoc_dev_data, sizeof(assoc_dev_data_t));
                     hash_map_put(associated_devices_map, strdup(tmp_mac_key), tmp_assoc_dev_data);
+                    wifi_util_info_print(WIFI_CTRL, "%s:%d %p add mac:%s size:%d\n", __func__,
+                        __LINE__, associated_devices_map, tmp_mac_key, hash_map_count(associated_devices_map));
                 } else {
                     wifi_util_error_print(WIFI_WEBCONFIG,"%s:%d: mac %s is already present for %d\n", __func__, __LINE__, tmp_mac_key, rdk_vap_info->vap_index);
                 }
