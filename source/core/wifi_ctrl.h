@@ -118,7 +118,7 @@ extern "C" {
 
 #define BUS_DML_CONFIG_FILE "bus_dml_config.json"
 
-#define CTRL_QUEUE_SIZE_MAX 500
+#define CTRL_QUEUE_SIZE_MAX 2000
 
 typedef enum {
     ctrl_webconfig_state_none = 0,

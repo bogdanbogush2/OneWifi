@@ -1637,6 +1637,7 @@ void process_disassoc_device_event(void *data)
                     }
                     p_wifi_mgr->ctrl.webconfig_state |= ctrl_webconfig_state_associated_clients_cfg_rsp_pending;
                     temp_assoc_dev_data->dev_stats.cli_Active = false;
+		    //XXX
                     lm_notify_disassoc(temp_assoc_dev_data, rdk_vap_info->vap_index);
                     free(temp_assoc_dev_data);
                 }
@@ -1670,6 +1671,7 @@ void process_disassoc_device_event(void *data)
             }
             p_wifi_mgr->ctrl.webconfig_state |= ctrl_webconfig_state_associated_clients_cfg_rsp_pending;
             temp_assoc_dev_data->dev_stats.cli_Active = false;
+	    //XXX
             lm_notify_disassoc(temp_assoc_dev_data, rdk_vap_info->vap_index);
             free(temp_assoc_dev_data);
         }
@@ -1765,6 +1767,7 @@ void process_assoc_device_event(void *data)
     }
     pthread_mutex_unlock(rdk_vap_info->associated_devices_lock);
 
+    //XXX
     if ((isVapPrivate(rdk_vap_info->vap_index))) {
         if (pcfg != NULL && pcfg->prefer_private) {
             pub_svc = get_svc_by_type(&p_wifi_mgr->ctrl, vap_svc_type_public);
@@ -1776,6 +1779,7 @@ void process_assoc_device_event(void *data)
         }
     }
 
+    //XXX
     //Code to publish event to LMLite.
     if ((isVapPrivate(rdk_vap_info->vap_index)) || (isVapXhs(rdk_vap_info->vap_index))) {
         snprintf(ssid, sizeof(ssid), "Device.WiFi.SSID.%d", rdk_vap_info->vap_index+1);
