@@ -2573,6 +2573,10 @@ void handle_whix_hal_ind_event(wifi_app_t *app, wifi_event_t *event)
 #ifdef ONEWIFI_WHIX_APP_SUPPORT
 int whix_event(wifi_app_t *app, wifi_event_t *event)
 {
+    if (access("/nvram/wifiWhixEvDis", F_OK) == 0) {
+        return 0;
+    }
+
     switch(event->event_type) {
         case wifi_event_type_webconfig:
             handle_whix_webconfig_event(app, event);

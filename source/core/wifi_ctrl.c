@@ -321,6 +321,9 @@ void ctrl_queue_loop(wifi_ctrl_t *ctrl)
                 pthread_mutex_unlock(&ctrl->queue_lock);
                 switch (event->event_type) {
                     case wifi_event_type_webconfig:
+                        if (access("/nvram/wifiWebconfigDis", F_OK) == 0) {
+                            break;
+                        }
                         handle_webconfig_event(ctrl, event->u.core_data.msg, event->u.core_data.len, event->sub_type);
                         break;
 

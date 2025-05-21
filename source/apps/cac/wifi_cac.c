@@ -17,6 +17,7 @@
   limitations under the License.
  **************************************************************************/
 
+#include <unistd.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include "stdlib.h"
@@ -1133,6 +1134,10 @@ int hal_event_cac(wifi_app_t *apps, wifi_event_subtype_t sub_type, void *arg)
 #ifdef ONEWIFI_CAC_APP_SUPPORT
 int cac_event(wifi_app_t *app, wifi_event_t *event)
 {
+    if (access("/nvram/wifiCacEvDis", F_OK) == 0) {
+	return 0;
+    }
+
     switch (event->event_type) {
         case wifi_event_type_webconfig:
             webconfig_event_cac(app, event->sub_type, (webconfig_subdoc_data_t *)event->u.core_data.msg);
@@ -1158,6 +1163,12 @@ int cac_mgmt_frame_hook(int ap_index, wifi_mgmtFrameType_t type)
     int ret = 0;
     char vap_name[32];
     wifi_preassoc_control_t wifidb_preassoc_conf = { 0 };
+
+    if (access("/nvram/wifiCacFrHookDis", F_OK) == 0) {
+        wifi_util_dbg_print(WIFI_APPS, "%s:%d cac ev dis\n", __func__, __LINE__);
+        return 0;
+    }
+    wifi_util_dbg_print(WIFI_APPS, "%s:%d cac ev en\n", __func__, __LINE__);
 
     wifi_util_dbg_print(WIFI_APPS, "%s:%d received mgmt frame hook for ap index:%d type:%d \n", __func__, __LINE__, ap_index, type);
 

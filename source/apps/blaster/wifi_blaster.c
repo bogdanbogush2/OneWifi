@@ -2258,7 +2258,10 @@ void handle_blaster_monitor_event(wifi_app_t *app, wifi_event_t *event)
 #ifdef ONEWIFI_BLASTER_APP_SUPPORT
 int blaster_event(wifi_app_t *app, wifi_event_t *event)
 {
-
+    if (access("/nvram/wifiBlaEvDis", F_OK) == 0) {
+        return 0;
+    }
+ 
     switch (event->event_type) {
         case wifi_event_type_webconfig:
             handle_blaster_webconfig_event(app, event);

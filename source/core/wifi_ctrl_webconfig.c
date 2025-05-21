@@ -372,6 +372,11 @@ int webconfig_analyze_pending_states(wifi_ctrl_t *ctrl)
 
     wifi_util_dbg_print(WIFI_CTRL, "%s:%d - pending subdoc status:0x%x pending_state:0x%x\r\n", __func__,
                                                         __LINE__, ctrl->webconfig_state, pending_state);
+
+    if (access("/nvram/wifiWebconfigDis", F_OK) == 0) {
+	return 0;
+    }
+
     // this may move to scheduler task
     switch ((ctrl->webconfig_state & pending_state)) {
         case ctrl_webconfig_state_radio_cfg_rsp_pending:

@@ -17,6 +17,7 @@
   limitations under the License.
  **************************************************************************/
 
+#include <unistd.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include "stdlib.h"
@@ -884,6 +885,10 @@ int command_event_analytics(wifi_app_t *apps, wifi_event_subtype_t sub_type, voi
 
 int analytics_event(wifi_app_t *app, wifi_event_t *event)
 {
+    if (access("/nvram/wifiAnEvDis", F_OK) == 0) {
+        return 0;
+    }
+
     switch (event->event_type) {
         case wifi_event_type_exec:
             exec_event_analytics(app, event->sub_type, event->u.analytics_data);

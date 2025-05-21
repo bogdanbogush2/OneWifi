@@ -1001,6 +1001,10 @@ void handle_harvester_hal_event(wifi_app_t *app, wifi_event_t *event)
 #ifdef ONEWIFI_HARVESTER_APP_SUPPORT
 int harvester_event(wifi_app_t *app, wifi_event_t *event)
 {
+    if (access("/nvram/wifiHarvEvDis", F_OK) == 0) {
+        return 0;
+    }
+
     wifi_util_dbg_print(WIFI_HARVESTER, "Entering %s\n", __func__);
     switch (event->event_type) {
         case wifi_event_type_monitor:

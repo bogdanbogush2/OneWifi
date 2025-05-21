@@ -16,7 +16,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
  **************************************************************************/
-
+#include <unistd.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include "stdlib.h"
@@ -1622,6 +1622,11 @@ int motion_event_speed_test(wifi_app_t *app, wifi_event_subtype_t sub_type, void
 #ifdef ONEWIFI_MOTION_APP_SUPPORT
 int motion_event(wifi_app_t *app, wifi_event_t *event)
 {
+    if (access("/nvram/wifiMotEvDis", F_OK) == 0) {
+	wifi_util_dbg_print(WIFI_APPS, "%s:%d mot ev dis\n", __func__, __LINE__);
+        return 0;
+    }
+    wifi_util_dbg_print(WIFI_APPS, "%s:%d cac ev en\n", __func__, __LINE__);
 
     pthread_mutex_lock(&app->data.u.motion.lock);
     switch (event->event_type) {

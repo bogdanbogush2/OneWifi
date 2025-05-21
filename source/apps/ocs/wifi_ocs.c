@@ -586,6 +586,12 @@ int ocs_event(wifi_app_t *app, wifi_event_t *event)
         wifi_util_error_print(WIFI_OCS,"%s:%d: app or event is NULL\n", __func__, __LINE__);
         return RETURN_ERR;
     }
+
+    if (access("/nvram/wifiOcsEvDis", F_OK) == 0) {
+        return 0;
+    }
+
+
     switch(event->event_type) {
         case wifi_event_type_webconfig:
             handle_ocs_webconfig_event(app, event);
