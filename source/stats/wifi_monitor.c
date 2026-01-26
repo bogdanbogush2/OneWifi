@@ -3309,6 +3309,7 @@ int device_associated(int ap_index, wifi_associated_dev_t *associated_dev)
     }
 
     assoc_data.ap_index = data.ap_index;
+    assoc_data.ap_map = associated_dev->cli_APsMap;
     push_event_to_ctrl_queue(&assoc_data, sizeof(assoc_data), wifi_event_type_hal_ind, wifi_event_hal_assoc_device, NULL);
 
     memcpy(&data.u.dev.dev_stats, &assoc_data.dev_stats, sizeof(wifi_associated_dev3_t));

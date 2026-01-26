@@ -898,6 +898,7 @@ typedef struct {
 
 typedef struct {
     int ap_index;
+    unsigned int ap_map;
     wifi_associated_dev3_t dev_stats;
     int reason;
     client_state_t client_state;

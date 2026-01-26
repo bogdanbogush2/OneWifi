@@ -2052,7 +2052,7 @@ void check_and_remove_mac_on_other_vaps(rdk_wifi_vap_info_t *current_vap_info,
    
     for (unsigned int vap_idx = 0; vap_idx < num_radios; vap_idx++) {
         // Skip the VAP where device is currently associated
-        if ((int)vap_idx == assoc_data->ap_index) {
+        if ((1 << vap_idx) & assoc_data->ap_map) {
             continue;
         }
 
